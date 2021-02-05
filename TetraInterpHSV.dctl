@@ -1,0 +1,108 @@
+// MIT License
+
+// Copyright (c) 2021 calvinsilly, Ember Light, Nick Eason
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
+DEFINE_UI_PARAMS(BLK_RGB, Black-Point, DCTLUI_SLIDER_FLOAT, 0.0, -0.25, 1.0, 0.001)
+DEFINE_UI_PARAMS(WHT_RGB, White-Point, DCTLUI_SLIDER_FLOAT, 1.0, 0.0, 1.25, 0.001)
+
+DEFINE_UI_PARAMS(RED_RED, Red-Hue, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(RED_GRN, Red-Sat, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(RED_BLU, Red-Value, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+
+DEFINE_UI_PARAMS(GRN_RED, Green-Hue, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(GRN_GRN, Green-Sat, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(GRN_BLU, Green-Value, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+
+DEFINE_UI_PARAMS(BLU_RED, Blue-Hue, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(BLU_GRN, Blue-Sat, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(BLU_BLU, Blue-Value, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+
+DEFINE_UI_PARAMS(CYN_RED, Cyan-Hue, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(CYN_GRN, Cyan-Sat, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(CYN_BLU, Cyan-Value, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+
+DEFINE_UI_PARAMS(MAG_RED, Magenta-Hue, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(MAG_GRN, Magenta-Sat, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(MAG_BLU, Magenta-Value, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+
+DEFINE_UI_PARAMS(YEL_RED, Yellow-Hue, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(YEL_GRN, Yellow-Sat, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(YEL_BLU, Yellow-Value, DCTLUI_SLIDER_FLOAT,  0.0, -1.0, 1.0, 0.001)
+
+#define RED_HUE (RED_BLU + 1.0f)
+#define RED_SAT (RED_BLU - RED_GRN)
+#define RED_VAL (RED_BLU + RED_RED - RED_GRN)
+
+#define GRN_HUE (GRN_BLU - GRN_GRN)
+#define GRN_SAT (GRN_BLU + 1.0f)
+#define GRN_VAL (GRN_BLU + GRN_RED - GRN_GRN)
+
+#define BLU_HUE (BLU_BLU + BLU_RED - BLU_GRN)
+#define BLU_SAT (BLU_BLU - BLU_GRN)
+#define BLU_VAL (BLU_BLU + 1.0f)
+
+#define CYN_HUE (CYN_BLU - CYN_GRN)
+#define CYN_SAT (CYN_BLU + 1.0f + CYN_RED)
+#define CYN_VAL (CYN_BLU + 1.0f)
+
+#define MAG_HUE (MAG_BLU + 1.0f)
+#define MAG_SAT (MAG_BLU - MAG_GRN)
+#define MAG_VAL (MAG_BLU + 1.0f + MAG_RED)
+
+#define YEL_HUE (YEL_BLU + 1.0f + YEL_RED)
+#define YEL_SAT (YEL_BLU + 1.0f)
+#define YEL_VAL (YEL_BLU - YEL_GRN)
+
+__DEVICE__ float3 transform(int p_Width, int p_Height, int p_X, int p_Y, float p_R, float p_G, float p_B) {
+    float3 rgb;
+
+    const float3 blk = make_float3(BLK_RGB, BLK_RGB, BLK_RGB);
+    const float3 wht = make_float3(WHT_RGB, WHT_RGB, WHT_RGB);
+    const float3 red = make_float3(RED_HUE, RED_SAT, RED_VAL); 
+    const float3 grn = make_float3(GRN_HUE, GRN_SAT, GRN_VAL);
+    const float3 blu = make_float3(BLU_HUE, BLU_SAT, BLU_VAL);
+    const float3 cyn = make_float3(CYN_HUE, CYN_SAT, CYN_VAL);
+    const float3 mag = make_float3(MAG_HUE, MAG_SAT, MAG_VAL);
+    const float3 yel = make_float3(YEL_HUE, YEL_SAT, YEL_VAL);
+
+    // NOTE: The normal operators are overloaded for their float3 struct
+    // but this absolutely still works with only individual RGB access.
+    // Check out the Nuke expression.
+    if (p_R > p_G) {
+        if (p_G > p_B) {
+            rgb = p_R * (red - blk) + blk + p_G * (yel - red) + p_B * (wht - yel);
+        } else if (p_R > p_B) {
+            rgb = p_R * (red - blk) + blk + p_G * (wht - mag) + p_B * (mag - red);
+        } else {
+            rgb = p_R * (mag - blu) + p_G * (wht - mag) + p_B * (blu - blk) + blk;
+        }
+    } else {
+        if (p_B > p_G) {
+            rgb = p_R * (wht - cyn) + p_G * (cyn - blu) + p_B * (blu - blk) + blk;
+        } else if (p_B > p_R) {
+            rgb = p_R * (wht - cyn) + p_G * (grn - blk) + blk + p_B * (cyn - grn);
+        } else {
+            rgb = p_R * (yel - grn) + p_G * (grn - blk) + blk + p_B * (wht - yel);
+        }
+    }
+
+    return rgb;
+}
