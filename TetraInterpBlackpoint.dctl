@@ -1,0 +1,88 @@
+// MIT License
+
+// Copyright (c) 2021 calvinsilly, Ember Light, Nick Eason
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
+// https://github.com/hotgluebanjo
+
+DEFINE_UI_PARAMS(BLK_R, Black Red, DCTLUI_SLIDER_FLOAT, 0.0, -0.25, 1.0, 0.001)
+DEFINE_UI_PARAMS(BLK_G, Black Green, DCTLUI_SLIDER_FLOAT, 0.0, -0.25, 1.0, 0.001)
+DEFINE_UI_PARAMS(BLK_B, Black Blue, DCTLUI_SLIDER_FLOAT, 0.0, -0.25, 1.0, 0.001)
+
+DEFINE_UI_PARAMS(WHT_R, White Red, DCTLUI_SLIDER_FLOAT, 1.0, 0.0, 1.25, 0.001)
+DEFINE_UI_PARAMS(WHT_G, White Green, DCTLUI_SLIDER_FLOAT, 1.0, 0.0, 1.25, 0.001)
+DEFINE_UI_PARAMS(WHT_B, White Blue, DCTLUI_SLIDER_FLOAT, 1.0, 0.0, 1.25, 0.001)
+
+DEFINE_UI_PARAMS(RED_R, Red Red, DCTLUI_SLIDER_FLOAT, 1.0, -1.0, 3.0, 0.001)
+DEFINE_UI_PARAMS(RED_G, Red Green, DCTLUI_SLIDER_FLOAT, 0.0, -2.0, 2.0, 0.001)
+DEFINE_UI_PARAMS(RED_B, Red Blue, DCTLUI_SLIDER_FLOAT, 0.0, -2.0, 2.0, 0.001)
+
+DEFINE_UI_PARAMS(GRN_R, Green Red, DCTLUI_SLIDER_FLOAT,  0.0, -2.0, 2.0, 0.001)
+DEFINE_UI_PARAMS(GRN_G, Green Green, DCTLUI_SLIDER_FLOAT,  1.0, -1.0, 3.0, 0.001)
+DEFINE_UI_PARAMS(GRN_B, Green Blue, DCTLUI_SLIDER_FLOAT,  0.0, -2.0, 2.0, 0.001)
+
+DEFINE_UI_PARAMS(BLU_R, Blue Red, DCTLUI_SLIDER_FLOAT,  0.0, -2.0, 2.0, 0.001)
+DEFINE_UI_PARAMS(BLU_G, Blue Green, DCTLUI_SLIDER_FLOAT,  0.0, -2.0, 2.0, 0.001)
+DEFINE_UI_PARAMS(BLU_B, Blue Blue, DCTLUI_SLIDER_FLOAT,  1.0, -1.0, 3.0, 0.001)
+
+DEFINE_UI_PARAMS(CYN_R, Cyan Red, DCTLUI_SLIDER_FLOAT,  0.0, -2.0, 2.0, 0.001)
+DEFINE_UI_PARAMS(CYN_G, Cyan Green, DCTLUI_SLIDER_FLOAT,  1.0, -1.0, 3.0, 0.001)
+DEFINE_UI_PARAMS(CYN_B, Cyan Blue, DCTLUI_SLIDER_FLOAT,  1.0, -1.0, 3.0, 0.001)
+
+DEFINE_UI_PARAMS(MAG_R, Magenta Red, DCTLUI_SLIDER_FLOAT,  1.0, -1.0, 3.0, 0.001)
+DEFINE_UI_PARAMS(MAG_G, Magenta Green, DCTLUI_SLIDER_FLOAT,  0.0, -2.0, 2.0, 0.001)
+DEFINE_UI_PARAMS(MAG_B, Magenta Blue, DCTLUI_SLIDER_FLOAT,  1.0, -1.0, 3.0, 0.001)
+
+DEFINE_UI_PARAMS(YEL_R, Yellow Red, DCTLUI_SLIDER_FLOAT,  1.0, -1.0, 3.0, 0.001)
+DEFINE_UI_PARAMS(YEL_G, Yellow Green, DCTLUI_SLIDER_FLOAT,  1.0, -1.0, 3.0, 0.001)
+DEFINE_UI_PARAMS(YEL_B, Yellow Blue, DCTLUI_SLIDER_FLOAT,  0.0, -2.0, 2.0, 0.001)
+
+__DEVICE__ float3 transform(int p_Width, int p_Height, int p_X, int p_Y, float p_R, float p_G, float p_B) {
+    float3 rgb;
+
+    float3 blk = make_float3(BLK_R, BLK_G, BLK_B);
+    float3 wht = make_float3(WHT_R, WHT_G, WHT_B);
+    float3 red = make_float3(RED_R, RED_G, RED_B); 
+    float3 grn = make_float3(GRN_R, GRN_G, GRN_B);
+    float3 blu = make_float3(BLU_R, BLU_G, BLU_B);
+    float3 cyn = make_float3(CYN_R, CYN_G, CYN_B);
+    float3 mag = make_float3(MAG_R, MAG_G, MAG_B);
+    float3 yel = make_float3(YEL_R, YEL_G, YEL_B);
+
+    if (p_R > p_G) {
+        if (p_G > p_B) {
+            rgb = p_R * (red - blk) + blk + p_G * (yel - red) + p_B * (wht - yel);
+        } else if (p_R > p_B) {
+            rgb = p_R * (red - blk) + blk + p_G * (wht - mag) + p_B * (mag - red);
+        } else {
+            rgb = p_R * (mag - blu) + p_G * (wht - mag) + p_B * (blu - blk) + blk;
+        }
+    } else {
+        if (p_B > p_G) {
+            rgb = p_R * (wht - cyn) + p_G * (cyn - blu) + p_B * (blu - blk) + blk;
+        } else if (p_B > p_R) {
+            rgb = p_R * (wht - cyn) + p_G * (grn - blk) + blk + p_B * (cyn - grn);
+        } else {
+            rgb = p_R * (yel - grn) + p_G * (grn - blk) + blk + p_B * (wht - yel);
+        }
+    }
+
+    return rgb;
+}

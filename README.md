@@ -1,5 +1,9 @@
-# Tetra DCTL
+Tetra DCTLs with inversion and black point controls. Also a very mediocre pseudo-HSV version.
 
-npeason's Tetra [DCTL port](https://github.com/npeason/Tetra-DCTLOFX) with black point controls.
+Check out the others:
 
-Also a very mediocre pseudo-HSV version.
+- https://github.com/calvinsilly/Tetrahedral-Interpolation
+- https://www.juanjosalazar.com/color-science
+- https://github.com/EmberLightVFX/Tetrahedral-Interpolation-for-Fusion
+- https://github.com/xavijulez/Tetrahedral-Interpolation-DCTL
+- https://github.com/npeason/Tetra-DCTLOFX
