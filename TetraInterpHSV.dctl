@@ -25,65 +25,65 @@
 DEFINE_UI_PARAMS(BLK_RGB, Black, DCTLUI_SLIDER_FLOAT, 0.0, -0.25, 1.0, 0.001)
 DEFINE_UI_PARAMS(WHT_RGB, White, DCTLUI_SLIDER_FLOAT, 1.0, 0.0, 1.25, 0.001)
 
-DEFINE_UI_PARAMS(RED_R, Red Hue, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
-DEFINE_UI_PARAMS(RED_G, Red Sat, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
-DEFINE_UI_PARAMS(RED_B, Red Value, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(RED_HUE, Red Hue, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(RED_SAT, Red Sat, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(RED_VAL, Red Value, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
 
-DEFINE_UI_PARAMS(GRN_R, Green Hue, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
-DEFINE_UI_PARAMS(GRN_G, Green Sat, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
-DEFINE_UI_PARAMS(GRN_B, Green Value, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(GRN_HUE, Green Hue, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(GRN_SAT, Green Sat, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(GRN_VAL, Green Value, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
 
-DEFINE_UI_PARAMS(BLU_R, Blue Hue, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
-DEFINE_UI_PARAMS(BLU_G, Blue Sat, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
-DEFINE_UI_PARAMS(BLU_B, Blue Value, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(BLU_HUE, Blue Hue, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(BLU_SAT, Blue Sat, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(BLU_VAL, Blue Value, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
 
-DEFINE_UI_PARAMS(CYN_R, Cyan Hue, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
-DEFINE_UI_PARAMS(CYN_G, Cyan Sat, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
-DEFINE_UI_PARAMS(CYN_B, Cyan Value, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(CYN_HUE, Cyan Hue, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(CYN_SAT, Cyan Sat, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(CYN_VAL, Cyan Value, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
 
-DEFINE_UI_PARAMS(MAG_R, Magenta Hue, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
-DEFINE_UI_PARAMS(MAG_G, Magenta Sat, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
-DEFINE_UI_PARAMS(MAG_B, Magenta Value, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(MAG_HUE, Magenta Hue, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(MAG_SAT, Magenta Sat, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(MAG_VAL, Magenta Value, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
 
-DEFINE_UI_PARAMS(YEL_R, Yellow Hue, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
-DEFINE_UI_PARAMS(YEL_G, Yellow Sat, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
-DEFINE_UI_PARAMS(YEL_B, Yellow Value, DCTLUI_SLIDER_FLOAT,  0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(YEL_HUE, Yellow Hue, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(YEL_SAT, Yellow Sat, DCTLUI_SLIDER_FLOAT, 0.0, -1.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(YEL_VAL, Yellow Value, DCTLUI_SLIDER_FLOAT,  0.0, -1.0, 1.0, 0.001)
 
 __DEVICE__ float3 transform(int p_Width, int p_Height, int p_X, int p_Y, float p_R, float p_G, float p_B) {
     float3 rgb;
 
-    float red_hue = RED_B + 1.0f;
-    float red_sat = RED_B - RED_G;
-    float red_val = RED_B + RED_R - RED_G;
+    float red_r = RED_VAL + 1.0f;
+    float red_g = RED_VAL - RED_SAT;
+    float red_b = RED_VAL + RED_HUE - RED_SAT;
 
-    float grn_hue = GRN_B - GRN_G;
-    float grn_sat = GRN_B + 1.0f;
-    float grn_val = GRN_B + GRN_R - GRN_G;
+    float grn_r = GRN_VAL - GRN_SAT;
+    float grn_g = GRN_VAL + 1.0f;
+    float grn_b = GRN_VAL + GRN_HUE - GRN_SAT;
 
-    float blu_hue = BLU_B + BLU_R - BLU_G;
-    float blu_sat = BLU_B - BLU_G;
-    float blu_val = BLU_B + 1.0f;
+    float blu_r = BLU_VAL + BLU_HUE - BLU_SAT;
+    float blu_g = BLU_VAL - BLU_SAT;
+    float blu_b = BLU_VAL + 1.0f;
 
-    float cyn_hue = CYN_B - CYN_G;
-    float cyn_sat = CYN_B + 1.0f + CYN_R;
-    float cyn_val = CYN_B + 1.0f;
+    float cyn_r = CYN_VAL - CYN_SAT;
+    float cyn_g = CYN_VAL + 1.0f + CYN_HUE;
+    float cyn_b = CYN_VAL + 1.0f;
 
-    float mag_hue = MAG_B + 1.0f;
-    float mag_sat = MAG_B - MAG_G;
-    float mag_val = MAG_B + 1.0f + MAG_R;
+    float mag_r = MAG_VAL + 1.0f;
+    float mag_g = MAG_VAL - MAG_SAT;
+    float mag_b = MAG_VAL + 1.0f + MAG_HUE;
 
-    float yel_hue = YEL_B + 1.0f + YEL_R;
-    float yel_sat = YEL_B + 1.0f;
-    float yel_val = YEL_B - YEL_G;
+    float yel_r = YEL_VAL + 1.0f + YEL_HUE;
+    float yel_g = YEL_VAL + 1.0f;
+    float yel_b = YEL_VAL - YEL_SAT;
 
     float3 blk = make_float3(BLK_RGB, BLK_RGB, BLK_RGB);
     float3 wht = make_float3(WHT_RGB, WHT_RGB, WHT_RGB);
-    float3 red = make_float3(red_hue, red_sat, red_val);
-    float3 grn = make_float3(grn_hue, grn_sat, grn_val);
-    float3 blu = make_float3(blu_hue, blu_sat, blu_val);
-    float3 cyn = make_float3(cyn_hue, cyn_sat, cyn_val);
-    float3 mag = make_float3(mag_hue, mag_sat, mag_val);
-    float3 yel = make_float3(yel_hue, yel_sat, yel_val);
+    float3 red = make_float3(red_r, red_g, red_b);
+    float3 grn = make_float3(grn_r, grn_g, grn_b);
+    float3 blu = make_float3(blu_r, blu_g, blu_b);
+    float3 cyn = make_float3(cyn_r, cyn_g, cyn_b);
+    float3 mag = make_float3(mag_r, mag_g, mag_b);
+    float3 yel = make_float3(yel_r, yel_g, yel_b);
 
     if (p_R > p_G) {
         if (p_G > p_B) {
