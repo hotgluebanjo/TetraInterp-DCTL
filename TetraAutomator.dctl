@@ -1,0 +1,107 @@
+// NB: Contained in this file is a SymPy solve of a system of equations from Salazar (2020).
+// This file is not implicitly MIT. Please do not try to sell it, modified or not, without
+// first contacting those who helped make it.
+//
+// https://www.juanjosalazar.com/color-science
+
+DEFINE_UI_PARAMS(g_in_red_r, Input Red R, DCTLUI_VALUE_BOX, 1.0)
+DEFINE_UI_PARAMS(g_in_red_g, Input Red G, DCTLUI_VALUE_BOX, 0.0)
+DEFINE_UI_PARAMS(g_in_red_b, Input Red B, DCTLUI_VALUE_BOX, 0.0)
+DEFINE_UI_PARAMS(g_out_red_r, Output Red R, DCTLUI_VALUE_BOX, 1.0)
+DEFINE_UI_PARAMS(g_out_red_g, Output Red G, DCTLUI_VALUE_BOX, 0.0)
+DEFINE_UI_PARAMS(g_out_red_b, Output Red B, DCTLUI_VALUE_BOX, 0.0)
+
+DEFINE_UI_PARAMS(g_in_grn_r, Input Green R, DCTLUI_VALUE_BOX, 0.0)
+DEFINE_UI_PARAMS(g_in_grn_g, Input Green G, DCTLUI_VALUE_BOX, 1.0)
+DEFINE_UI_PARAMS(g_in_grn_b, Input Green B, DCTLUI_VALUE_BOX, 0.0)
+DEFINE_UI_PARAMS(g_out_grn_r, Output Green R, DCTLUI_VALUE_BOX, 0.0)
+DEFINE_UI_PARAMS(g_out_grn_g, Output Green G, DCTLUI_VALUE_BOX, 1.0)
+DEFINE_UI_PARAMS(g_out_grn_b, Output Green B, DCTLUI_VALUE_BOX, 0.0)
+
+DEFINE_UI_PARAMS(g_in_blu_r, Input Blue R, DCTLUI_VALUE_BOX, 0.0)
+DEFINE_UI_PARAMS(g_in_blu_g, Input Blue G, DCTLUI_VALUE_BOX, 0.0)
+DEFINE_UI_PARAMS(g_in_blu_b, Input Blue B, DCTLUI_VALUE_BOX, 1.0)
+DEFINE_UI_PARAMS(g_out_blu_r, Output Blue R, DCTLUI_VALUE_BOX, 0.0)
+DEFINE_UI_PARAMS(g_out_blu_g, Output Blue G, DCTLUI_VALUE_BOX, 0.0)
+DEFINE_UI_PARAMS(g_out_blu_b, Output Blue B, DCTLUI_VALUE_BOX, 1.0)
+
+DEFINE_UI_PARAMS(g_in_cyn_r, Input Cyan R, DCTLUI_VALUE_BOX, 0.0)
+DEFINE_UI_PARAMS(g_in_cyn_g, Input Cyan G, DCTLUI_VALUE_BOX, 1.0)
+DEFINE_UI_PARAMS(g_in_cyn_b, Input Cyan B, DCTLUI_VALUE_BOX, 1.0)
+DEFINE_UI_PARAMS(g_out_cyn_r, Output Cyan R, DCTLUI_VALUE_BOX, 0.0)
+DEFINE_UI_PARAMS(g_out_cyn_g, Output Cyan G, DCTLUI_VALUE_BOX, 1.0)
+DEFINE_UI_PARAMS(g_out_cyn_b, Output Cyan B, DCTLUI_VALUE_BOX, 1.0)
+
+DEFINE_UI_PARAMS(g_in_mag_r, Input Magenta R, DCTLUI_VALUE_BOX, 1.0)
+DEFINE_UI_PARAMS(g_in_mag_g, Input Magenta G, DCTLUI_VALUE_BOX, 0.0)
+DEFINE_UI_PARAMS(g_in_mag_b, Input Magenta B, DCTLUI_VALUE_BOX, 1.0)
+DEFINE_UI_PARAMS(g_out_mag_r, Output Magenta R, DCTLUI_VALUE_BOX, 1.0)
+DEFINE_UI_PARAMS(g_out_mag_g, Output Magenta G, DCTLUI_VALUE_BOX, 0.0)
+DEFINE_UI_PARAMS(g_out_mag_b, Output Magenta B, DCTLUI_VALUE_BOX, 1.0)
+
+DEFINE_UI_PARAMS(g_in_yel_r, Input Yellow R, DCTLUI_VALUE_BOX, 1.0)
+DEFINE_UI_PARAMS(g_in_yel_g, Input Yellow G, DCTLUI_VALUE_BOX, 1.0)
+DEFINE_UI_PARAMS(g_in_yel_b, Input Yellow B, DCTLUI_VALUE_BOX, 0.0)
+DEFINE_UI_PARAMS(g_out_yel_r, Output Yellow R, DCTLUI_VALUE_BOX, 1.0)
+DEFINE_UI_PARAMS(g_out_yel_g, Output Yellow G, DCTLUI_VALUE_BOX, 1.0)
+DEFINE_UI_PARAMS(g_out_yel_b, Output Yellow B, DCTLUI_VALUE_BOX, 0.0)
+
+__DEVICE__ float3 transform(int p_Width, int p_Height, int p_X, int p_Y, float p_R, float p_G, float p_B) {
+    float3 red = {
+        (g_in_red_b*g_in_yel_g - g_in_red_b*g_out_yel_r - g_in_red_g*g_in_yel_b + g_in_red_g*g_out_yel_r + g_in_yel_b*g_out_red_r - g_in_yel_g*g_out_red_r)/(g_in_red_b*g_in_yel_g - g_in_red_b*g_in_yel_r - g_in_red_g*g_in_yel_b + g_in_red_g*g_in_yel_r + g_in_red_r*g_in_yel_b - g_in_red_r*g_in_yel_g),
+        (g_in_red_b*g_in_yel_g - g_in_red_b*g_out_yel_g - g_in_red_g*g_in_yel_b + g_in_red_g*g_out_yel_g + g_in_yel_b*g_out_red_g - g_in_yel_g*g_out_red_g)/(g_in_red_b*g_in_yel_g - g_in_red_b*g_in_yel_r - g_in_red_g*g_in_yel_b + g_in_red_g*g_in_yel_r + g_in_red_r*g_in_yel_b - g_in_red_r*g_in_yel_g),
+        (g_in_red_b*g_in_yel_g - g_in_red_b*g_out_yel_b - g_in_red_g*g_in_yel_b + g_in_red_g*g_out_yel_b + g_in_yel_b*g_out_red_b - g_in_yel_g*g_out_red_b)/(g_in_red_b*g_in_yel_g - g_in_red_b*g_in_yel_r - g_in_red_g*g_in_yel_b + g_in_red_g*g_in_yel_r + g_in_red_r*g_in_yel_b - g_in_red_r*g_in_yel_g)
+    };
+
+    float3 grn = {
+        (-g_in_grn_b*g_in_red_g*g_in_yel_r + g_in_grn_b*g_in_red_g*g_out_yel_r + g_in_grn_b*g_in_red_r*g_in_yel_g - g_in_grn_b*g_in_red_r*g_out_yel_r - g_in_grn_b*g_in_yel_g*g_out_red_r + g_in_grn_b*g_in_yel_r*g_out_red_r - g_in_grn_r*g_in_red_b*g_in_yel_g + g_in_grn_r*g_in_red_b*g_in_yel_r + g_in_grn_r*g_in_red_g*g_in_yel_b - g_in_grn_r*g_in_red_g*g_out_yel_r - g_in_grn_r*g_in_red_r*g_in_yel_b + g_in_grn_r*g_in_red_r*g_out_yel_r + g_in_grn_r*g_in_yel_g*g_out_red_r - g_in_grn_r*g_in_yel_r*g_out_red_r + g_in_red_b*g_in_yel_g*g_out_grn_r - g_in_red_b*g_in_yel_r*g_out_grn_r - g_in_red_g*g_in_yel_b*g_out_grn_r + g_in_red_g*g_in_yel_r*g_out_grn_r + g_in_red_r*g_in_yel_b*g_out_grn_r - g_in_red_r*g_in_yel_g*g_out_grn_r)/(g_in_grn_g*g_in_red_b*g_in_yel_g - g_in_grn_g*g_in_red_b*g_in_yel_r - g_in_grn_g*g_in_red_g*g_in_yel_b + g_in_grn_g*g_in_red_g*g_in_yel_r + g_in_grn_g*g_in_red_r*g_in_yel_b - g_in_grn_g*g_in_red_r*g_in_yel_g - g_in_grn_r*g_in_red_b*g_in_yel_g + g_in_grn_r*g_in_red_b*g_in_yel_r + g_in_grn_r*g_in_red_g*g_in_yel_b - g_in_grn_r*g_in_red_g*g_in_yel_r - g_in_grn_r*g_in_red_r*g_in_yel_b + g_in_grn_r*g_in_red_r*g_in_yel_g),
+        (-g_in_grn_b*g_in_red_g*g_in_yel_r + g_in_grn_b*g_in_red_g*g_out_yel_g + g_in_grn_b*g_in_red_r*g_in_yel_g - g_in_grn_b*g_in_red_r*g_out_yel_g - g_in_grn_b*g_in_yel_g*g_out_red_g + g_in_grn_b*g_in_yel_r*g_out_red_g - g_in_grn_r*g_in_red_b*g_in_yel_g + g_in_grn_r*g_in_red_b*g_in_yel_r + g_in_grn_r*g_in_red_g*g_in_yel_b - g_in_grn_r*g_in_red_g*g_out_yel_g - g_in_grn_r*g_in_red_r*g_in_yel_b + g_in_grn_r*g_in_red_r*g_out_yel_g + g_in_grn_r*g_in_yel_g*g_out_red_g - g_in_grn_r*g_in_yel_r*g_out_red_g + g_in_red_b*g_in_yel_g*g_out_grn_g - g_in_red_b*g_in_yel_r*g_out_grn_g - g_in_red_g*g_in_yel_b*g_out_grn_g + g_in_red_g*g_in_yel_r*g_out_grn_g + g_in_red_r*g_in_yel_b*g_out_grn_g - g_in_red_r*g_in_yel_g*g_out_grn_g)/(g_in_grn_g*g_in_red_b*g_in_yel_g - g_in_grn_g*g_in_red_b*g_in_yel_r - g_in_grn_g*g_in_red_g*g_in_yel_b + g_in_grn_g*g_in_red_g*g_in_yel_r + g_in_grn_g*g_in_red_r*g_in_yel_b - g_in_grn_g*g_in_red_r*g_in_yel_g - g_in_grn_r*g_in_red_b*g_in_yel_g + g_in_grn_r*g_in_red_b*g_in_yel_r + g_in_grn_r*g_in_red_g*g_in_yel_b - g_in_grn_r*g_in_red_g*g_in_yel_r - g_in_grn_r*g_in_red_r*g_in_yel_b + g_in_grn_r*g_in_red_r*g_in_yel_g),
+        (-g_in_grn_b*g_in_red_g*g_in_yel_r + g_in_grn_b*g_in_red_g*g_out_yel_b + g_in_grn_b*g_in_red_r*g_in_yel_g - g_in_grn_b*g_in_red_r*g_out_yel_b - g_in_grn_b*g_in_yel_g*g_out_red_b + g_in_grn_b*g_in_yel_r*g_out_red_b - g_in_grn_r*g_in_red_b*g_in_yel_g + g_in_grn_r*g_in_red_b*g_in_yel_r + g_in_grn_r*g_in_red_g*g_in_yel_b - g_in_grn_r*g_in_red_g*g_out_yel_b - g_in_grn_r*g_in_red_r*g_in_yel_b + g_in_grn_r*g_in_red_r*g_out_yel_b + g_in_grn_r*g_in_yel_g*g_out_red_b - g_in_grn_r*g_in_yel_r*g_out_red_b + g_in_red_b*g_in_yel_g*g_out_grn_b - g_in_red_b*g_in_yel_r*g_out_grn_b - g_in_red_g*g_in_yel_b*g_out_grn_b + g_in_red_g*g_in_yel_r*g_out_grn_b + g_in_red_r*g_in_yel_b*g_out_grn_b - g_in_red_r*g_in_yel_g*g_out_grn_b)/(g_in_grn_g*g_in_red_b*g_in_yel_g - g_in_grn_g*g_in_red_b*g_in_yel_r - g_in_grn_g*g_in_red_g*g_in_yel_b + g_in_grn_g*g_in_red_g*g_in_yel_r + g_in_grn_g*g_in_red_r*g_in_yel_b - g_in_grn_g*g_in_red_r*g_in_yel_g - g_in_grn_r*g_in_red_b*g_in_yel_g + g_in_grn_r*g_in_red_b*g_in_yel_r + g_in_grn_r*g_in_red_g*g_in_yel_b - g_in_grn_r*g_in_red_g*g_in_yel_r - g_in_grn_r*g_in_red_r*g_in_yel_b + g_in_grn_r*g_in_red_r*g_in_yel_g)
+    };
+
+    float3 blu = {
+        (g_in_blu_g*g_in_cyn_r - g_in_blu_g*g_out_cyn_r - g_in_blu_r*g_in_cyn_g + g_in_blu_r*g_out_cyn_r + g_in_cyn_g*g_out_blu_r - g_in_cyn_r*g_out_blu_r)/(g_in_blu_b*g_in_cyn_g - g_in_blu_b*g_in_cyn_r - g_in_blu_g*g_in_cyn_b + g_in_blu_g*g_in_cyn_r + g_in_blu_r*g_in_cyn_b - g_in_blu_r*g_in_cyn_g),
+        (g_in_blu_g*g_in_cyn_r - g_in_blu_g*g_out_cyn_g - g_in_blu_r*g_in_cyn_g + g_in_blu_r*g_out_cyn_g + g_in_cyn_g*g_out_blu_g - g_in_cyn_r*g_out_blu_g)/(g_in_blu_b*g_in_cyn_g - g_in_blu_b*g_in_cyn_r - g_in_blu_g*g_in_cyn_b + g_in_blu_g*g_in_cyn_r + g_in_blu_r*g_in_cyn_b - g_in_blu_r*g_in_cyn_g),
+        (g_in_blu_g*g_in_cyn_r - g_in_blu_g*g_out_cyn_b - g_in_blu_r*g_in_cyn_g + g_in_blu_r*g_out_cyn_b + g_in_cyn_g*g_out_blu_b - g_in_cyn_r*g_out_blu_b)/(g_in_blu_b*g_in_cyn_g - g_in_blu_b*g_in_cyn_r - g_in_blu_g*g_in_cyn_b + g_in_blu_g*g_in_cyn_r + g_in_blu_r*g_in_cyn_b - g_in_blu_r*g_in_cyn_g)
+    };
+
+    float3 cyn = {
+        (-g_in_blu_b*g_in_cyn_r + g_in_blu_b*g_out_cyn_r + g_in_blu_g*g_in_cyn_r - g_in_blu_g*g_out_cyn_r + g_in_blu_r*g_in_cyn_b - g_in_blu_r*g_in_cyn_g - g_in_cyn_b*g_out_blu_r + g_in_cyn_g*g_out_blu_r)/(g_in_blu_b*g_in_cyn_g - g_in_blu_b*g_in_cyn_r - g_in_blu_g*g_in_cyn_b + g_in_blu_g*g_in_cyn_r + g_in_blu_r*g_in_cyn_b - g_in_blu_r*g_in_cyn_g),
+        (-g_in_blu_b*g_in_cyn_r + g_in_blu_b*g_out_cyn_g + g_in_blu_g*g_in_cyn_r - g_in_blu_g*g_out_cyn_g + g_in_blu_r*g_in_cyn_b - g_in_blu_r*g_in_cyn_g - g_in_cyn_b*g_out_blu_g + g_in_cyn_g*g_out_blu_g)/(g_in_blu_b*g_in_cyn_g - g_in_blu_b*g_in_cyn_r - g_in_blu_g*g_in_cyn_b + g_in_blu_g*g_in_cyn_r + g_in_blu_r*g_in_cyn_b - g_in_blu_r*g_in_cyn_g),
+        (-g_in_blu_b*g_in_cyn_r + g_in_blu_b*g_out_cyn_b + g_in_blu_g*g_in_cyn_r - g_in_blu_g*g_out_cyn_b + g_in_blu_r*g_in_cyn_b - g_in_blu_r*g_in_cyn_g - g_in_cyn_b*g_out_blu_b + g_in_cyn_g*g_out_blu_b)/(g_in_blu_b*g_in_cyn_g - g_in_blu_b*g_in_cyn_r - g_in_blu_g*g_in_cyn_b + g_in_blu_g*g_in_cyn_r + g_in_blu_r*g_in_cyn_b - g_in_blu_r*g_in_cyn_g)
+    };
+
+    float3 mag = {
+        (g_in_mag_b*g_in_red_b*g_in_yel_g - g_in_mag_b*g_in_red_b*g_out_yel_r - g_in_mag_b*g_in_red_g*g_in_yel_b + g_in_mag_b*g_in_red_g*g_out_yel_r + g_in_mag_b*g_in_yel_b*g_out_red_r - g_in_mag_b*g_in_yel_g*g_out_red_r - g_in_mag_g*g_in_red_b*g_in_yel_g + g_in_mag_g*g_in_red_b*g_in_yel_r + g_in_mag_g*g_in_red_g*g_in_yel_b - g_in_mag_g*g_in_red_g*g_in_yel_r - g_in_mag_g*g_in_red_r*g_in_yel_b + g_in_mag_g*g_in_red_r*g_in_yel_g - g_in_mag_r*g_in_red_b*g_in_yel_g + g_in_mag_r*g_in_red_b*g_out_yel_r + g_in_mag_r*g_in_red_g*g_in_yel_b - g_in_mag_r*g_in_red_g*g_out_yel_r - g_in_mag_r*g_in_yel_b*g_out_red_r + g_in_mag_r*g_in_yel_g*g_out_red_r + g_in_red_b*g_in_yel_g*g_out_mag_r - g_in_red_b*g_in_yel_r*g_out_mag_r - g_in_red_g*g_in_yel_b*g_out_mag_r + g_in_red_g*g_in_yel_r*g_out_mag_r + g_in_red_r*g_in_yel_b*g_out_mag_r - g_in_red_r*g_in_yel_g*g_out_mag_r)/(g_in_mag_b*g_in_red_b*g_in_yel_g - g_in_mag_b*g_in_red_b*g_in_yel_r - g_in_mag_b*g_in_red_g*g_in_yel_b + g_in_mag_b*g_in_red_g*g_in_yel_r + g_in_mag_b*g_in_red_r*g_in_yel_b - g_in_mag_b*g_in_red_r*g_in_yel_g - g_in_mag_g*g_in_red_b*g_in_yel_g + g_in_mag_g*g_in_red_b*g_in_yel_r + g_in_mag_g*g_in_red_g*g_in_yel_b - g_in_mag_g*g_in_red_g*g_in_yel_r - g_in_mag_g*g_in_red_r*g_in_yel_b + g_in_mag_g*g_in_red_r*g_in_yel_g),
+        (g_in_mag_b*g_in_red_b*g_in_yel_g - g_in_mag_b*g_in_red_b*g_out_yel_g - g_in_mag_b*g_in_red_g*g_in_yel_b + g_in_mag_b*g_in_red_g*g_out_yel_g + g_in_mag_b*g_in_yel_b*g_out_red_g - g_in_mag_b*g_in_yel_g*g_out_red_g - g_in_mag_g*g_in_red_b*g_in_yel_g + g_in_mag_g*g_in_red_b*g_in_yel_r + g_in_mag_g*g_in_red_g*g_in_yel_b - g_in_mag_g*g_in_red_g*g_in_yel_r - g_in_mag_g*g_in_red_r*g_in_yel_b + g_in_mag_g*g_in_red_r*g_in_yel_g - g_in_mag_r*g_in_red_b*g_in_yel_g + g_in_mag_r*g_in_red_b*g_out_yel_g + g_in_mag_r*g_in_red_g*g_in_yel_b - g_in_mag_r*g_in_red_g*g_out_yel_g - g_in_mag_r*g_in_yel_b*g_out_red_g + g_in_mag_r*g_in_yel_g*g_out_red_g + g_in_red_b*g_in_yel_g*g_out_mag_g - g_in_red_b*g_in_yel_r*g_out_mag_g - g_in_red_g*g_in_yel_b*g_out_mag_g + g_in_red_g*g_in_yel_r*g_out_mag_g + g_in_red_r*g_in_yel_b*g_out_mag_g - g_in_red_r*g_in_yel_g*g_out_mag_g)/(g_in_mag_b*g_in_red_b*g_in_yel_g - g_in_mag_b*g_in_red_b*g_in_yel_r - g_in_mag_b*g_in_red_g*g_in_yel_b + g_in_mag_b*g_in_red_g*g_in_yel_r + g_in_mag_b*g_in_red_r*g_in_yel_b - g_in_mag_b*g_in_red_r*g_in_yel_g - g_in_mag_g*g_in_red_b*g_in_yel_g + g_in_mag_g*g_in_red_b*g_in_yel_r + g_in_mag_g*g_in_red_g*g_in_yel_b - g_in_mag_g*g_in_red_g*g_in_yel_r - g_in_mag_g*g_in_red_r*g_in_yel_b + g_in_mag_g*g_in_red_r*g_in_yel_g),
+        (g_in_mag_b*g_in_red_b*g_in_yel_g - g_in_mag_b*g_in_red_b*g_out_yel_b - g_in_mag_b*g_in_red_g*g_in_yel_b + g_in_mag_b*g_in_red_g*g_out_yel_b + g_in_mag_b*g_in_yel_b*g_out_red_b - g_in_mag_b*g_in_yel_g*g_out_red_b - g_in_mag_g*g_in_red_b*g_in_yel_g + g_in_mag_g*g_in_red_b*g_in_yel_r + g_in_mag_g*g_in_red_g*g_in_yel_b - g_in_mag_g*g_in_red_g*g_in_yel_r - g_in_mag_g*g_in_red_r*g_in_yel_b + g_in_mag_g*g_in_red_r*g_in_yel_g - g_in_mag_r*g_in_red_b*g_in_yel_g + g_in_mag_r*g_in_red_b*g_out_yel_b + g_in_mag_r*g_in_red_g*g_in_yel_b - g_in_mag_r*g_in_red_g*g_out_yel_b - g_in_mag_r*g_in_yel_b*g_out_red_b + g_in_mag_r*g_in_yel_g*g_out_red_b + g_in_red_b*g_in_yel_g*g_out_mag_b - g_in_red_b*g_in_yel_r*g_out_mag_b - g_in_red_g*g_in_yel_b*g_out_mag_b + g_in_red_g*g_in_yel_r*g_out_mag_b + g_in_red_r*g_in_yel_b*g_out_mag_b - g_in_red_r*g_in_yel_g*g_out_mag_b)/(g_in_mag_b*g_in_red_b*g_in_yel_g - g_in_mag_b*g_in_red_b*g_in_yel_r - g_in_mag_b*g_in_red_g*g_in_yel_b + g_in_mag_b*g_in_red_g*g_in_yel_r + g_in_mag_b*g_in_red_r*g_in_yel_b - g_in_mag_b*g_in_red_r*g_in_yel_g - g_in_mag_g*g_in_red_b*g_in_yel_g + g_in_mag_g*g_in_red_b*g_in_yel_r + g_in_mag_g*g_in_red_g*g_in_yel_b - g_in_mag_g*g_in_red_g*g_in_yel_r - g_in_mag_g*g_in_red_r*g_in_yel_b + g_in_mag_g*g_in_red_r*g_in_yel_g)
+    };
+
+    float3 yel = {
+        (g_in_red_b*g_in_yel_g - g_in_red_b*g_in_yel_r - g_in_red_g*g_in_yel_b + g_in_red_g*g_out_yel_r + g_in_red_r*g_in_yel_b - g_in_red_r*g_out_yel_r - g_in_yel_g*g_out_red_r + g_in_yel_r*g_out_red_r)/(g_in_red_b*g_in_yel_g - g_in_red_b*g_in_yel_r - g_in_red_g*g_in_yel_b + g_in_red_g*g_in_yel_r + g_in_red_r*g_in_yel_b - g_in_red_r*g_in_yel_g),
+        (g_in_red_b*g_in_yel_g - g_in_red_b*g_in_yel_r - g_in_red_g*g_in_yel_b + g_in_red_g*g_out_yel_g + g_in_red_r*g_in_yel_b - g_in_red_r*g_out_yel_g - g_in_yel_g*g_out_red_g + g_in_yel_r*g_out_red_g)/(g_in_red_b*g_in_yel_g - g_in_red_b*g_in_yel_r - g_in_red_g*g_in_yel_b + g_in_red_g*g_in_yel_r + g_in_red_r*g_in_yel_b - g_in_red_r*g_in_yel_g),
+        (g_in_red_b*g_in_yel_g - g_in_red_b*g_in_yel_r - g_in_red_g*g_in_yel_b + g_in_red_g*g_out_yel_b + g_in_red_r*g_in_yel_b - g_in_red_r*g_out_yel_b - g_in_yel_g*g_out_red_b + g_in_yel_r*g_out_red_b)/(g_in_red_b*g_in_yel_g - g_in_red_b*g_in_yel_r - g_in_red_g*g_in_yel_b + g_in_red_g*g_in_yel_r + g_in_red_r*g_in_yel_b - g_in_red_r*g_in_yel_g)
+    };
+
+    float3 ts;
+
+    if (p_R > p_G) {
+        if (p_G > p_B) {
+            ts = p_R * red + p_G * (yel - red) + p_B * (1.0f - yel);
+        } else if (p_R > p_B) {
+            ts = p_R * red + p_G * (1.0f - mag) + p_B * (mag - red);
+        } else {
+            ts = p_R * (mag - blu) + p_G * (1.0f - mag) + p_B * blu;
+        }
+    } else {
+        if (p_B > p_G) {
+            ts = p_R * (1.0f - cyn) + p_G * (cyn - blu) + p_B * blu;
+        } else if (p_B > p_R) {
+            ts = p_R * (1.0f - cyn) + p_G * grn + p_B * (cyn - grn);
+        } else {
+            ts = p_R * (yel - grn) + p_G * grn + p_B * (1.0f - yel);
+        }
+    }
+
+    return ts;
+}
